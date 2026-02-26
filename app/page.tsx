@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import { Menu, Search, ShoppingBag, ArrowRight, ArrowLeft, Star, Mouse, MoreVertical } from 'lucide-react';
 
@@ -271,6 +273,37 @@ export default function Home() {
             <div className="aspect-[4/5] relative rounded-2xl overflow-hidden hidden md:block">
               <Image src="https://picsum.photos/seed/bot3/600/800" alt="Drop" fill className="object-cover" />
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className="bg-[#FF4500] text-white py-20 md:py-32 px-6 md:px-12">
+        <div className="max-w-[1600px] mx-auto w-full flex flex-col lg:flex-row items-center justify-between gap-12">
+          <div className="max-w-2xl w-full">
+            <h2 className="font-display text-5xl md:text-7xl uppercase tracking-tight mb-4">
+              STAY IN THE LOOP.
+            </h2>
+            <p className="text-white/90 text-lg md:text-xl font-medium">
+              Sign up for exclusive drops, early access to sales, and streetwear culture straight to your inbox.
+            </p>
+          </div>
+          <div className="w-full lg:w-auto flex-1 max-w-xl">
+            <form className="flex w-full relative" onSubmit={(e) => { e.preventDefault(); }}>
+              <input 
+                type="email" 
+                placeholder="ENTER YOUR EMAIL" 
+                className="w-full bg-transparent border-b-2 border-white py-4 pr-12 text-lg md:text-xl font-medium focus:outline-none placeholder:text-white/60 uppercase"
+                required
+              />
+              <button 
+                type="submit" 
+                className="absolute right-0 bottom-4 hover:translate-x-2 transition-transform"
+                aria-label="Subscribe"
+              >
+                <ArrowRight className="w-8 h-8" />
+              </button>
+            </form>
           </div>
         </div>
       </section>
