@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { Menu, Search, ShoppingBag, ArrowRight, ArrowLeft, Star, Mouse, MoreVertical } from 'lucide-react';
 
@@ -46,6 +46,36 @@ export default function Home() {
   const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  const handleScroll = () => {
+    if (carouselRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
+      const progress = scrollLeft / (scrollWidth - clientWidth);
+      setScrollProgress(progress);
+    }
+  };
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (carouselRef.current) {
+      const { clientWidth } = carouselRef.current;
+      const scrollAmount = direction === 'left' ? -clientWidth : clientWidth;
+      carouselRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const topPicks = [
+    { name: 'CARGO PANTS', price: '$89', rating: '4.80', reviews: '120', img: 'https://picsum.photos/seed/pants/600/800' },
+    { name: 'GRAPHITE STREET JACKET', price: '$129', rating: '4.99', reviews: '100', img: 'https://picsum.photos/seed/jacket/600/800' },
+    { name: 'CLASSIC LOGO TEE', price: '$45', rating: '4.70', reviews: '87', img: 'https://picsum.photos/seed/tee/600/800' },
+    { name: 'URBAN BEANIE', price: '$29', rating: '4.90', reviews: '210', img: 'https://picsum.photos/seed/beanie/600/800' },
+    { name: 'OVERSIZED HOODIE', price: '$75', rating: '4.85', reviews: '156', img: 'https://picsum.photos/seed/hoodie/600/800' },
+    { name: 'UTILITY VEST', price: '$110', rating: '4.65', reviews: '42', img: 'https://picsum.photos/seed/vest/600/800' },
+    { name: 'STREET SNEAKERS', price: '$150', rating: '4.95', reviews: '320', img: 'https://picsum.photos/seed/sneakers/600/800' },
+    { name: 'CROSSBODY BAG', price: '$55', rating: '4.75', reviews: '89', img: 'https://picsum.photos/seed/bag/600/800' },
+  ];
 
   return (
     <main className="min-h-screen overflow-hidden">
@@ -199,39 +229,59 @@ export default function Home() {
       </section>
 
       {/* Top Picks Section */}
-      <section className="px-6 md:px-12 py-16 max-w-[1600px] mx-auto w-full">
-        <div className="flex items-end justify-between mb-12">
+      <section className="py-16 w-full">
+        <div className="px-6 md:px-12 max-w-[1600px] mx-auto flex items-end justify-between mb-12">
           <h2 className="font-display text-6xl md:text-8xl uppercase tracking-tight leading-none">TOP PICS</h2>
           <div className="hidden md:flex gap-3">
-            <button className="w-14 h-14 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors">
+            <button 
+              onClick={() => scroll('left')}
+              className="w-14 h-14 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={scrollProgress <= 0.01}
+            >
               <ArrowLeft className="w-6 h-6" />
             </button>
-            <button className="w-14 h-14 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors">
+            <button 
+              onClick={() => scroll('right')}
+              className="w-14 h-14 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={scrollProgress >= 0.99}
+            >
               <ArrowRight className="w-6 h-6" />
             </button>
           </div>
         </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-          {[
-            { name: 'CARGO PANTS', price: '$89', rating: '4.80', reviews: '120', img: 'https://picsum.photos/seed/pants/600/800' },
-            { name: 'GRAPHITE STREET JACKET', price: '$129', rating: '4.99', reviews: '100', img: 'https://picsum.photos/seed/jacket/600/800' },
-            { name: 'CLASSIC LOGO TEE', price: '$45', rating: '4.70', reviews: '87', img: 'https://picsum.photos/seed/tee/600/800' },
-            { name: 'URBAN BEANIE', price: '$29', rating: '4.90', reviews: '210', img: 'https://picsum.photos/seed/beanie/600/800' },
-          ].map((product, i) => (
-            <div key={i} className="group cursor-pointer">
-              <div className="relative aspect-[3/4] mb-5 overflow-hidden rounded-2xl bg-gray-100">
-                <Image src={product.img} alt={product.name} fill className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+        <div className="relative w-full">
+          <div 
+            ref={carouselRef}
+            onScroll={handleScroll}
+            className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar px-6 md:px-12 pb-8 gap-6 md:gap-8"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {topPicks.map((product, i) => (
+              <div key={i} className="group cursor-pointer flex-none w-[85vw] sm:w-[calc(50vw-2rem)] lg:w-[calc(25vw-3rem)] max-w-[400px] snap-start">
+                <div className="relative aspect-[3/4] mb-5 overflow-hidden rounded-2xl bg-gray-100">
+                  <Image src={product.img} alt={product.name} fill className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+                </div>
+                <h3 className="font-display text-2xl uppercase tracking-wide mb-2">{product.name}</h3>
+                <div className="flex items-center gap-2 mb-3">
+                  <Star className="w-4 h-4 fill-[#FF4500] text-[#FF4500]" />
+                  <span className="text-sm font-medium">{product.rating}</span>
+                  <span className="text-sm text-gray-500">({product.reviews} reviews)</span>
+                </div>
+                <p className="font-bold text-xl">{product.price}</p>
               </div>
-              <h3 className="font-display text-2xl uppercase tracking-wide mb-2">{product.name}</h3>
-              <div className="flex items-center gap-2 mb-3">
-                <Star className="w-4 h-4 fill-[#FF4500] text-[#FF4500]" />
-                <span className="text-sm font-medium">{product.rating}</span>
-                <span className="text-sm text-gray-500">({product.reviews} reviews)</span>
-              </div>
-              <p className="font-bold text-xl">{product.price}</p>
+            ))}
+          </div>
+          
+          {/* Progress Indicator */}
+          <div className="max-w-[1600px] mx-auto px-6 md:px-12 mt-4">
+            <div className="w-full h-1 bg-gray-200 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-[#111] transition-all duration-300 ease-out rounded-full"
+                style={{ width: `${Math.max(10, scrollProgress * 100)}%` }}
+              />
             </div>
-          ))}
+          </div>
         </div>
       </section>
 
