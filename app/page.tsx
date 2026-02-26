@@ -151,29 +151,29 @@ export default function Home() {
       <div className="bg-[#111] text-white py-5 overflow-hidden flex items-center relative">
         <div className="flex animate-marquee w-max">
           {/* First set */}
-          <div className="flex items-center gap-8 font-display text-3xl md:text-4xl tracking-wide uppercase px-4">
-            <span>20% OFF LIMITED TIME SALE</span>
+          <div className="flex items-center gap-8 font-display text-3xl md:text-4xl tracking-wide uppercase px-4 whitespace-nowrap">
+            <span className="truncate">20% OFF LIMITED TIME SALE</span>
             <AsteriskIcon className="text-[#FF4500] w-8 h-8 shrink-0" />
-            <span>LATEST TRENDS DROP OFF NOW!</span>
+            <span className="truncate">LATEST TRENDS DROP OFF NOW!</span>
             <AsteriskIcon className="text-[#FF4500] w-8 h-8 shrink-0" />
-            <span>2025 WINTER SALE</span>
+            <span className="truncate">2025 WINTER SALE</span>
             <AsteriskIcon className="text-[#FF4500] w-8 h-8 shrink-0" />
-            <span>20% OFF LIMITED TIME SALE</span>
+            <span className="truncate">20% OFF LIMITED TIME SALE</span>
             <AsteriskIcon className="text-[#FF4500] w-8 h-8 shrink-0" />
-            <span>LATEST TRENDS DROP OFF NOW!</span>
+            <span className="truncate">LATEST TRENDS DROP OFF NOW!</span>
             <AsteriskIcon className="text-[#FF4500] w-8 h-8 shrink-0" />
           </div>
           {/* Second set for seamless loop */}
-          <div className="flex items-center gap-8 font-display text-3xl md:text-4xl tracking-wide uppercase px-4">
-            <span>20% OFF LIMITED TIME SALE</span>
+          <div className="flex items-center gap-8 font-display text-3xl md:text-4xl tracking-wide uppercase px-4 whitespace-nowrap">
+            <span className="truncate">20% OFF LIMITED TIME SALE</span>
             <AsteriskIcon className="text-[#FF4500] w-8 h-8 shrink-0" />
-            <span>LATEST TRENDS DROP OFF NOW!</span>
+            <span className="truncate">LATEST TRENDS DROP OFF NOW!</span>
             <AsteriskIcon className="text-[#FF4500] w-8 h-8 shrink-0" />
-            <span>2025 WINTER SALE</span>
+            <span className="truncate">2025 WINTER SALE</span>
             <AsteriskIcon className="text-[#FF4500] w-8 h-8 shrink-0" />
-            <span>20% OFF LIMITED TIME SALE</span>
+            <span className="truncate">20% OFF LIMITED TIME SALE</span>
             <AsteriskIcon className="text-[#FF4500] w-8 h-8 shrink-0" />
-            <span>LATEST TRENDS DROP OFF NOW!</span>
+            <span className="truncate">LATEST TRENDS DROP OFF NOW!</span>
             <AsteriskIcon className="text-[#FF4500] w-8 h-8 shrink-0" />
           </div>
         </div>
