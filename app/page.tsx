@@ -1,6 +1,8 @@
 'use client';
 
 import Image from 'next/image';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'motion/react';
 import { Menu, Search, ShoppingBag, ArrowRight, ArrowLeft, Star, Mouse, MoreVertical } from 'lucide-react';
 
 function SunburstIcon({ className }: { className?: string }) {
@@ -35,6 +37,16 @@ function AsteriskIcon({ className }: { className?: string }) {
 }
 
 export default function Home() {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+  
+  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
   return (
     <main className="min-h-screen overflow-hidden">
       {/* Header */}
@@ -60,7 +72,7 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="px-6 md:px-12 max-w-[1600px] mx-auto w-full pt-4 pb-12">
+      <section ref={heroRef} className="px-6 md:px-12 max-w-[1600px] mx-auto w-full pt-4 pb-12">
         <div className="flex flex-col items-end mb-2">
           <p className="font-display text-xl md:text-2xl tracking-wide uppercase">MINIMAL. BOLD. MADE FOR THE STREETS.</p>
         </div>
@@ -70,10 +82,12 @@ export default function Home() {
         </div>
         
         <div className="relative w-full aspect-[4/3] md:aspect-[21/9] rounded-3xl overflow-hidden">
-          <Image src="https://picsum.photos/seed/streetwear1/1920/1080" alt="Streetwear couple" fill className="object-cover" priority />
+          <motion.div style={{ y: imageY }} className="absolute inset-0 scale-110 origin-top">
+            <Image src="https://picsum.photos/seed/streetwear1/1920/1080" alt="Streetwear couple" fill className="object-cover" priority />
+          </motion.div>
           <div className="absolute inset-0 bg-black/20" />
           
-          <div className="absolute bottom-0 left-0 p-6 md:p-12 max-w-xl">
+          <motion.div style={{ y: textY, opacity }} className="absolute bottom-0 left-0 p-6 md:p-12 max-w-xl">
             <p className="text-white text-sm md:text-base lg:text-lg mb-8 font-medium leading-relaxed">
               We believe streetwear is more than just clothing—it's an expression of culture, identity, and confidence.
             </p>
@@ -85,9 +99,9 @@ export default function Home() {
                 Explore Collections
               </button>
             </div>
-          </div>
+          </motion.div>
           
-          <div className="absolute bottom-6 right-6 md:bottom-12 md:right-12 hidden md:flex items-center justify-center w-32 h-32">
+          <motion.div style={{ opacity }} className="absolute bottom-6 right-6 md:bottom-12 md:right-12 hidden md:flex items-center justify-center w-32 h-32">
              <div className="absolute inset-0 animate-[spin_15s_linear_infinite]">
                <svg viewBox="0 0 100 100" className="w-full h-full text-white/90 fill-current">
                  <path id="circlePath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="none" />
@@ -99,7 +113,7 @@ export default function Home() {
              <div className="w-12 h-12 border border-white/30 rounded-full flex items-center justify-center backdrop-blur-md">
                <Mouse className="w-5 h-5 text-white" />
              </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
